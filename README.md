@@ -1,2 +1,4 @@
-# Laravel5-3DES
-Laravel Framework 5.5.40 extend 3DES Component
+# Lumen-3DES
+Lumen extend 3DES Component
+
+###### Copyright © 2018 Fairyin. ALL RIGHTS RESERVED. ######
