@@ -1,6 +1,6 @@
 <?php
 /**
- * 3DES 加密解密服务初始化。
+ * AES 加密解密服务初始化。
  *
  * @author    fairyin <fairyin@126.com>
  * @copyright © 2018 imcn.vip
