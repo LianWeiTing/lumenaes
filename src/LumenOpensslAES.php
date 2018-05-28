@@ -43,14 +43,11 @@ class LumenOpensslAES
         $a_aes_config = Config::get($version);
         if ($a_aes_config == null || !isset($a_aes_config['key'])) {
             throw new Ex\ConfigNotFoundException();
-        }
-        if (!isset($a_aes_config['key']) || strlen($a_aes_config['key']) !== 32) {
+        } elseif (!isset($a_aes_config['key']) || strlen($a_aes_config['key']) !== 32) {
             throw new Ex\KeyLenNotMeetException();
-        }
-        if (!isset($a_aes_config['method']) || !in_array($a_aes_config['method'], openssl_get_cipher_methods(true))) {
+        } elseif (!isset($a_aes_config['method']) || !in_array($a_aes_config['method'], openssl_get_cipher_methods(true))) {
             throw new Ex\MethodNotAllowedException();
-        }
-        if (!isset($a_aes_config['offset']) || ((int) $a_aes_config['offset']) <= 0 || ((int) $a_aes_config['offset']) >= 40) {
+        } elseif (!isset($a_aes_config['offset']) || ((int) $a_aes_config['offset']) <= 0 || ((int) $a_aes_config['offset']) >= 40) {
             throw new Ex\OffsetNotAllowedException();
         }
         $this->key = $a_aes_config['key'];
@@ -99,8 +96,7 @@ class LumenOpensslAES
             $s_hash_data = substr($s_new_hash, $this->iv_length + 40 + $this->offset);
             if (sha1($this->iv . $s_hash_data . $this->key) != $s_salt) {
                 throw new Ex\SignNotMatchException();
-            }
-            if (strlen($this->iv) !== $this->iv_length) {
+            } elseif (strlen($this->iv) !== $this->iv_length) {
                 throw new Ex\IVLenNotMeetException();
             }
             $s_data = openssl_decrypt(base64_decode($s_hash_data), $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv);
