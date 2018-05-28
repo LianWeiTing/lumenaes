@@ -10,6 +10,7 @@
 namespace Fairyin\LumenAES;
 
 use Fairyin\LumenAES\Exceptions as Ex;
+use Illuminate\Support\Facades\Config;
 
 class LumenOpensslAES
 {
@@ -37,21 +38,25 @@ class LumenOpensslAES
      */
     protected $offset;
 
-    public function __construct($key, $method, $offset)
+    public function __construct($version = 'lumenaes.default')
     {
-        if (strlen($key) !== 32) {
+        $a_aes_config = Config::get($version);
+        if ($a_aes_config == null || !isset($a_aes_config['key'])) {
+            throw new Ex\ConfigNotFoundException();
+        }
+        if (!isset($a_aes_config['key']) || strlen($a_aes_config['key']) !== 32) {
             throw new Ex\KeyLenNotMeetException();
         }
-        if (!in_array($method, openssl_get_cipher_methods(true))) {
+        if (!isset($a_aes_config['method']) || !in_array($a_aes_config['method'], openssl_get_cipher_methods(true))) {
             throw new Ex\MethodNotAllowedException();
         }
-        if (!is_int($offset) || $offset <=0 || $offset >= 40) {
+        if (!isset($a_aes_config['offset']) || ((int) $a_aes_config['offset']) <= 0 || ((int) $a_aes_config['offset']) >= 40) {
             throw new Ex\OffsetNotAllowedException();
         }
-        $this->key = $key;
-        $this->method = $method;
+        $this->key = $a_aes_config['key'];
+        $this->method = $a_aes_config['method'];
         $this->iv = $this->generateIV();
-        $this->offset = $offset;
+        $this->offset = (int) $a_aes_config['offset'];
     }
 
     /**
