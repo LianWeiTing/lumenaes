@@ -38,9 +38,15 @@ class LumenOpensslAES
      */
     protected $offset;
 
-    public function __construct($version = 'lumenaes.default')
+    /**
+     * 版本信息。
+     * @var string
+     */
+    protected $version;
+
+    public function __construct($version = 'default')
     {
-        $a_aes_config = Config::get($version);
+        $a_aes_config = Config::get('lumenaes.' . $version);
         if ($a_aes_config == null || !isset($a_aes_config['key'])) {
             throw new Ex\ConfigNotFoundException();
         } elseif (!isset($a_aes_config['key']) || strlen($a_aes_config['key']) !== 32) {
@@ -54,6 +60,7 @@ class LumenOpensslAES
         $this->method = $a_aes_config['method'];
         $this->iv = $this->generateIV();
         $this->offset = (int) $a_aes_config['offset'];
+        $this->version = $version;
     }
 
     /**
@@ -150,5 +157,22 @@ class LumenOpensslAES
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage(), 9990);
         }
+    }
+
+    /**
+     * 获取版本信息。
+     * @return string
+     */
+    public function getVersion()
+    {
+        if ('default' == $this->version) {
+            if (!isset(Config::get('lumenaes.default')['version'])) {
+                throw new Ex\ConfigNotFoundException();
+            }
+
+            return Config::get('lumenaes.default')['version'];
+        }
+
+        return $this->version;
     }
 }

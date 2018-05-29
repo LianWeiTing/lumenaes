@@ -37,7 +37,7 @@ class OpensslAesServiceProvider extends ServiceProvider
                         throw new Ex\ConfigNotFoundException();
                     }
 
-                    return new LumenOpensslAES('lumenaes.' . $s_new_version);
+                    return new LumenOpensslAES($s_new_version);
                 }
 
                 return new LumenOpensslAES();
