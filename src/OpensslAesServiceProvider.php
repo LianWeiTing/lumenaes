@@ -26,7 +26,7 @@ class OpensslAesServiceProvider extends ServiceProvider
                 }
                 $s_path = parse_url($_SERVER['REQUEST_URI'])['path'];
                 $a_urls = explode('/', $s_path);
-                $s_new_version = isset($a_urls[1]) ? $a_urls[1] : '';
+                $s_new_version = (isset($a_urls[1]) && $a_urls[1] != '') ? $a_urls[1] : $s_default_version;
                 if ($s_new_version == '') {
                     throw new \Exception('路由异常！');
                 } elseif ($s_default_version != $s_new_version) {
@@ -34,7 +34,7 @@ class OpensslAesServiceProvider extends ServiceProvider
                     if (!$a_all_versions) {
                         throw new Ex\ConfigNotFoundException();
                     } elseif (!in_array($s_new_version, $a_all_versions)) {
-                        throw new Ex\ConfigNotFoundException();
+                        $s_new_version = $s_default_version;
                     }
 
                     return new LumenOpensslAES($s_new_version);
