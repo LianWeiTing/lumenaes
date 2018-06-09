@@ -9,6 +9,7 @@
 
 namespace Fairyin\LumenAES;
 
+use Exception;
 use Fairyin\LumenAES\Exceptions as Ex;
 use Illuminate\Support\Facades\Config;
 
@@ -79,10 +80,9 @@ class LumenOpensslAES
             $s_offset_str = sha1($this->iv . $this->key . time());
             $s_offset_start = substr($s_offset_str, strlen($s_offset_str) - $this->offset - 1, $this->offset);
             $s_offset_end = substr(sha1($this->iv . time()), 0, strlen($s_offset_str) - $this->offset);
-
             return $s_offset_end . $this->iv . $s_salt . $s_offset_start . $s_hash;
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage(), 9990);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), 9990);
         }
     }
 
@@ -109,8 +109,8 @@ class LumenOpensslAES
             $s_data = openssl_decrypt(base64_decode($s_hash_data), $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv);
 
             return $s_data;
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage(), 9990);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), 9990);
         }
     }
 
@@ -130,7 +130,7 @@ class LumenOpensslAES
             $data = openssl_decrypt(base64_decode($s_hash), $this->method, $this->key, OPENSSL_RAW_DATA, $iv);
 
             return $data;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new Exception("解密失败！");
         }
     }
@@ -154,8 +154,8 @@ class LumenOpensslAES
             }
 
             return $s_iv;
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage(), 9990);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), 9990);
         }
     }
 
