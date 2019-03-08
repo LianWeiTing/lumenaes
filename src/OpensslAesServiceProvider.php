@@ -19,7 +19,6 @@ class OpensslAesServiceProvider extends ServiceProvider
     {
         $this->app->singleton('lumenaes', function ($app) {
             try {
-                $s_url = $_SERVER['REQUEST_URI'];
                 $s_default_version = isset(Config::get('lumenaes.default')['version']) ? Config::get('lumenaes.default')['version'] : false;
                 if ($s_default_version === false) {
                     throw new Ex\ConfigNotFoundException();
