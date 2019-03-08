@@ -10,7 +10,7 @@ namespace Fairyin\LumenAES;
 
 use Exception;
 
-class CliAesDecrypt
+class CliAesEncrypt
 {
     protected $iv;
 
