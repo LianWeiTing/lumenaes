@@ -52,8 +52,6 @@ class LumenOpensslAES
             throw new Ex\ConfigNotFoundException();
         } elseif (!isset($a_aes_config['key']) || strlen($a_aes_config['key']) !== 32) {
             throw new Ex\KeyLenNotMeetException();
-        } elseif (!isset($a_aes_config['method']) || !in_array($a_aes_config['method'], openssl_get_cipher_methods(true))) {
-            throw new Ex\MethodNotAllowedException();
         } elseif (!isset($a_aes_config['offset']) || ((int) $a_aes_config['offset']) <= 0 || ((int) $a_aes_config['offset']) >= 40) {
             throw new Ex\OffsetNotAllowedException();
         }
